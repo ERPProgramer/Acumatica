@@ -86,7 +86,7 @@
    ![image](./images/Report_Luanch.png)
    ![image](./images/Report_Luanch_Result.png)
 
-- ตัวอย่างการเซ็ต Category
+- ตัวอย่างลิงค์มากกว่าหนึ่งรีพอร์ต
   ![image](./images/Report_Category_Example.png)
   ![image](./images/Report_Category_Example_Ctor.png)
   ![image](./images/Report_Category_Example_Btn.png)
