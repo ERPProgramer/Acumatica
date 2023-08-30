@@ -46,7 +46,7 @@
    ![image](./images/Code_Report_Put_Ctor.png)
 
 5. Publish > Publish Current Project
-   ![image](./images/publish.png)
+   ![image](./images/Publish.png)
 
 6. Result
    ![image](./images/Button_Report.png)
