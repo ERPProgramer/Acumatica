@@ -42,7 +42,7 @@
    ![image](./images/Code_Report_Put.png)
    Parent DAC
    ![image](./images/ParentDAC.png)
-   Set Cagegory ผ่านทาง constrctor ของ class นั้น
+   Set Category ผ่านทาง constrctor ของ class นั้น
    ![image](./images/Code_Report_Put_Ctor.png)
 
 5. Publish > Publish Current Project
@@ -85,3 +85,8 @@
 6. หน้าเรีอกรีพอร์ต
    ![image](./images/Report_Luanch.png)
    ![image](./images/Report_Luanch_Result.png)
+
+- ตัวอย่างการเซ็ต Category
+  ![image](./images/Report_Category_Example.png)
+  ![image](./images/Report_Category_Example_Ctor.png)
+  ![image](./images/Report_Category_Example_Btn.png)
