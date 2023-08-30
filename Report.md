@@ -43,7 +43,17 @@
    Parent DAC
    ![image](./images/ParentDAC.png)
    Set Category ผ่านทาง constrctor ของ class นั้น
-   ![image](./images/Code_Report_Put_Ctor.png)
+
+   ```c#
+   public ErppBillingMaint()
+      {
+          this.RHold.SetConnotation(ActionConnotation.Success);
+          this.BillingReport.SetCategory("Reports");
+          this.BillingReport.SetEnabled(false);
+      }
+   ```
+
+````
 
 5. Publish > Publish Current Project
    ![image](./images/Publish.png)
@@ -87,6 +97,28 @@
    ![image](./images/Report_Luanch_Result.png)
 
 - ตัวอย่างลิงค์มากกว่าหนึ่งรีพอร์ต
-  ![image](./images/Report_Category_Example.png)
-  ![image](./images/Report_Category_Example_Ctor.png)
-  ![image](./images/Report_Category_Example_Btn.png)
+
+```c#
+    #region Action Billing Summary Report
+        public PXAction<ErppARBilling> BillingSummaryReport;
+        [PXButton(CommitChanges = true, SpecialType = PXSpecialButtonType.Report)]
+        [PXUIField(DisplayName = "ERPP AR Billing Summary Report", MapEnableRights = PXCacheRights.Select)]
+        protected virtual IEnumerable billingSummaryReport(PXAdapter adapter)
+        {
+            return adapter.Get();
+        }
+        #endregion
+````
+
+```c#
+  public ErppBillingMaint()
+      {
+          this.RHold.SetConnotation(ActionConnotation.Success);
+          this.BillingReport.SetCategory("Reports");
+          this.BillingReport.SetEnabled(false);
+
+          this.BillingSummaryReport.SetCategory("Reports");
+      }
+```
+
+![image](./images/Report_Category_Example_Btn.png)
