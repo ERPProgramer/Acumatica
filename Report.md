@@ -84,3 +84,4 @@
 
 6. หน้าเรีอกรีพอร์ต
    ![image](./images/Report_Luanch.png)
+   ![image](./images/Report_Luanch_Result.png)
