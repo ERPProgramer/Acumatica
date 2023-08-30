@@ -53,8 +53,6 @@
       }
    ```
 
-````
-
 5. Publish > Publish Current Project
    ![image](./images/Publish.png)
 
@@ -108,7 +106,7 @@
             return adapter.Get();
         }
         #endregion
-````
+```
 
 ```c#
   public ErppBillingMaint()
