@@ -68,10 +68,9 @@
    }
    ```
 
-4. สร้าง Events สำหรับช่อง usrTest เปลี่ยนค่า ให้ไปอัปเดตที่ช่อง Description (OrderDesc) ที่ grapg extension
+4. สร้าง Events สำหรับช่อง usrTest เปลี่ยนค่า ให้ไปอัปเดตที่ช่อง Description (OrderDesc) ที่ Form (เซ็ต Commit Change = True ที่ฟิลล์ Event)
 
    ```C#
-   #region Event Handlers
    protected virtual void _(Events.FieldUpdated<SOOrder, SOOrderExt.usrTest> e)
    {
     var row = e.Row;
@@ -82,9 +81,29 @@
         row.OrderDesc = rowExt.UsrTest;
     }
    }
-   #endregion
    ```
+   ![image](./images/forms/Action_Text_Change_8.png)
 
 5. result
    ![image](./images/forms/Action_Text_Change_6.png)
    ![image](./images/forms/Action_Text_Change_7.png)
+
+> ### **Calculete in this Form - Other Form**
+
+1. สร้าง Events สำหรับ grid details เมื่อ RowInserted ให้เอาช่่อง Quatity ไปอัปเดตที่ช่อง Description (OrderDesc) ที่ Form
+
+   ```C#
+   protected virtual void _(Events.RowInserted<SOLine> e)
+   {
+    var row = e.Row;
+
+    decimal? qty = Base.Transactions.Select().FirstTableItems
+        .Select(x => x.OrderQty).Sum();
+
+    Base.Document.Current.OrderDesc = qty.ToString();
+   }
+   ```
+
+2. result
+   ![image](./images/forms/Action_Cal_1.png)
+   ![image](./images/forms/Action_Cal_2.png)
