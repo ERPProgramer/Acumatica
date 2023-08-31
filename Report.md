@@ -1,6 +1,6 @@
 # REPORT
 
-> **เพิ่มรายงานที่ form**
+> ### **Report From std Form**
 
 1. Customization Projects
    ![image](./images/reports/Customization_Project.png)
@@ -120,3 +120,39 @@
 ```
 
 ![image](./images/reports/Report_Category_Example_Btn.png)
+
+> ### **Report New Form (Criteria Form)**
+
+1. ex report (so641010.rpx)
+   ![image](./images/reports/Ex_new_1.png)
+
+2. File > Build schema > Parameters
+   ![image](./images/reports/Ex_new_2.png)
+   View Name
+   ![image](./images/reports/Ex_new_3.png)
+
+   - Report.GetFieldSchema('DAC.Field')
+     - (ฟิลลืที่มี Selector Attributes เช่น Order Type, Order Nbr)
+       ![image](./images/reports/Ex_new_4.png)
+       ![image](./images/reports/Ex_new_5.png)
+
+3. filter from parameters
+   ![image](./images/reports/Ex_new_6.png)
+
+4. File > Save To Server > Rename (ex641010) > Ok
+   ![image](./images/reports/Ex_new_7.png)
+
+5. site map > Add Row
+   ![image](./images/reports/Ex_new_8.png)
+   set properties
+
+   - Screen ID
+   - Title
+   - URL (ID เท่ากับชื่อรีพอร์ต เช่น ex641010.rpx)
+     ![image](./images/reports/Ex_new_9.png)
+
+6. Search Screen
+   ![image](./images/reports/Ex_new_10.png)
+
+7. result
+   ![image](./images/reports/Ex_new_11.png)
