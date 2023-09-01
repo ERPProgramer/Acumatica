@@ -82,6 +82,7 @@
     }
    }
    ```
+
    ![image](./images/forms/Action_Text_Change_8.png)
 
 5. result
@@ -107,3 +108,81 @@
 2. result
    ![image](./images/forms/Action_Cal_1.png)
    ![image](./images/forms/Action_Cal_2.png)
+
+3. calculate from DAC (แก้โค้ดจากข้อ 1)
+
+   ```C#
+   protected virtual void _(Events.RowInserted<SOLine> e)
+   {
+    var row = e.Row;
+
+    //decimal? qty = Base.Transactions.Select().FirstTableItems
+    //    .Select(x => x.OrderQty).Sum();
+    SOOrderEntry graph = PXGraph.CreateInstance<SOOrderEntry>();
+
+    if (row.OrderQty != null)
+    {
+        decimal? qty = 0;
+        foreach (POOrder obj in PXSelect<POOrder>.SelectWindowed(graph, 1, 1))
+        {
+            qty = +(obj.CuryLineTotal * obj.CuryOrderTotal);
+        }
+
+        Base.Document.Current.OrderDesc = qty.ToString();
+    }
+   }
+   ```
+
+> ### **Create Link Form**
+
+1. following code:
+
+   ```C#
+   public PXAction<SOOrder> TestLink;
+   [PXButton(CommitChanges = true)]
+   [PXUIField(DisplayName = "Action to Me",
+    MapEnableRights = PXCacheRights.Select,
+    MapViewRights = PXCacheRights.Select, Enabled = true, Visible = true)]
+   protected virtual IEnumerable testLink(PXAdapter adapter)
+   {
+    if (Base.Document.Current?.OrderNbr != null)
+    {
+        SOOrderEntry graph = PXGraph.CreateInstance<SOOrderEntry>();
+
+        graph.Document.Current = PXSelectReadonly<SOOrder,
+            Where<SOOrder.orderNbr, Equal<Required<SOOrder.orderNbr>>>>
+            .Select(graph, Base.Document.Current.OrderNbr);
+
+        if (graph.Document.Current != null)
+        {
+            PXRedirectHelper.TryRedirect(graph, PXRedirectHelper.WindowMode.NewWindow);
+        }
+    }
+
+    return adapter.Get();
+   }
+   ```
+
+2. result
+   ![image](./images/forms/Link_Form_1.png)
+
+> ### **Combo Box**
+* Fix Data
+   1. UsrTest Field (delete userTest component)
+      ![image](./images/forms/Combo_Box_1.png)
+
+   2. Edit Dac
+
+      ```C#
+      [PXDBString(50)]
+      [PXUIField(DisplayName = "Test")]
+      //[PXSelector(typeof(Search<Customer.acctCD>),
+      //    typeof(Customer.acctCD),
+      //    typeof(Customer.acctName))]
+      [PXStringList(new string[] { "H", "B" }, new string[] { "Hold", "Balanch" })]
+      public virtual string UsrTest { get; set; }
+      public abstract class usrTest : PX.Data.BQL.BqlString.Field<usrTest> { }
+      ```
+
+   3. result
+      ![result](./images/forms/Combo_Box_2.png)
