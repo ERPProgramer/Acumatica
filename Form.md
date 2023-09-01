@@ -167,11 +167,13 @@
    ![image](./images/forms/Link_Form_1.png)
 
 > ### **Combo Box**
-* Fix Data
-   1. UsrTest Field (delete userTest component)
+
+- Fix Data
+
+  1.  UsrTest Field (delete userTest component)
       ![image](./images/forms/Combo_Box_1.png)
 
-   2. Edit Dac
+  2.  Edit Dac
 
       ```C#
       [PXDBString(50)]
@@ -184,5 +186,350 @@
       public abstract class usrTest : PX.Data.BQL.BqlString.Field<usrTest> { }
       ```
 
-   3. result
+  3.  result
       ![result](./images/forms/Combo_Box_2.png)
+
+# New Form New Table + Sub Grid (2 table)
+
+> ### **New Table**
+
+1. Customization Project > Customization Project Editor > Database Script > Add Script
+   ![image](./images/forms/New_Table_1.png)
+   (Example Script)
+
+   - Parent Table
+
+     ```SQL
+     IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'ErppARBilling'))
+     BEGIN
+        CREATE TABLE [dbo].[ErppARBilling](
+           CompanyID int NOT NULL,
+           DocType nvarchar(3) NOT NULL,
+           RefNbr nvarchar(10) NOT NULL,
+           Status nvarchar(1) NOT NULL,
+           AppDate datetime NOT NULL,
+           DueDate datetime NOT NULL,
+           CustomerID int NOT NULL,
+           TermID nvarchar(20) NOT NULL,
+           CuryID nvarchar(10) NOT NULL,
+           DocDes nvarchar(200),
+           CuryApplAmt decimal(9,2),
+           CuryUnappliedBal decimal(9,2),
+
+           CreatedByID uniqueidentifier NOT NULL,
+           CreatedByScreenID char(8) NOT NULL,
+           CreatedDateTime datetime NOT NULL,
+           LastModifiedByID uniqueidentifier NOT NULL,
+           LastModifiedByScreenID char(8) NOT NULL,
+           LastModifiedDateTime datetime NOT NULL,
+           tstamp timestamp NOT NULL
+
+           constraint pk_ErppARBilling primary key(
+              CompanyID,
+              RefNbr
+           )
+        )
+     END
+     ```
+
+   - child table
+
+     ```SQL
+     IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'ErppARBillingDetails'))
+        BEGIN
+           CREATE TABLE [dbo].[ErppARBillingDetails](
+              CompanyID int NOT NULL,
+              BillingID nvarchar(10),
+              DocType nvarchar(3) NOT NULL,
+              RefNbr nvarchar(10) NOT NULL,
+              LineNbr int NOT NULL,
+              Date datetime NOT NULL,
+              DueDate datetime NOT NULL,
+              CustomerID int NOT NULL,
+              CuryApplAmt decimal(9,2),
+              CuryApplAmtTotal decimal(9,2),
+
+              CreatedByID uniqueidentifier NOT NULL,
+              CreatedByScreenID char(8) NOT NULL,
+              CreatedDateTime datetime NOT NULL,
+              LastModifiedByID uniqueidentifier NOT NULL,
+              LastModifiedByScreenID char(8) NOT NULL,
+              LastModifiedDateTime datetime NOT NULL,
+              tstamp timestamp NOT NULL
+
+              constraint pk_ErppARBillingDetails primary key(
+                 CompanyID,
+                 BillingID,
+                 DocType,
+                 RefNbr,
+                 LineNbr
+              )
+           )
+        END
+     ```
+
+   Specify Database Engine > Ok
+   ![image](./images/forms/New_Table_2.png)
+
+2. Publish > Publish Current Project
+
+> ### **New DAC**
+
+1. Customization Project > Customization Project Editor > Code > Add New Record
+   ![image](./images/forms/New_Form_1.png)
+
+2. generate new dac
+
+   - template -> New DAC
+   - class name -> Table Name
+   - Generate Members from Database -> True
+     ![image](./images/forms/New_Form_2.png)
+
+   ```C#
+   using System;
+   using PX.Data;
+
+   namespace ErppTestP
+   {
+      [Serializable]
+      [PXCacheName("ErppARBilling")]
+      public class ErppARBilling : IBqlTable
+      {
+         #region DocType
+         [PXDBString(3, IsKey = true, IsUnicode = true, InputMask = "")]
+         [PXUIField(DisplayName = "Doc Type")]
+         public virtual string DocType { get; set; }
+         public abstract class docType : PX.Data.BQL.BqlString.Field<docType> { }
+         #endregion
+
+         #region RefNbr
+         [PXDBString(10, IsKey = true, IsUnicode = true, InputMask = "")]
+         [PXUIField(DisplayName = "Ref Nbr")]
+         public virtual string RefNbr { get; set; }
+         public abstract class refNbr : PX.Data.BQL.BqlString.Field<refNbr> { }
+         #endregion
+
+         #region Status
+         [PXDBString(1, IsUnicode = true, InputMask = "")]
+         [PXUIField(DisplayName = "Status")]
+         public virtual string Status { get; set; }
+         public abstract class status : PX.Data.BQL.BqlString.Field<status> { }
+         #endregion
+
+         #region AppDate
+         [PXDBDate()]
+         [PXUIField(DisplayName = "App Date")]
+         public virtual DateTime? AppDate { get; set; }
+         public abstract class appDate : PX.Data.BQL.BqlDateTime.Field<appDate> { }
+         #endregion
+
+         #region DueDate
+         [PXDBDate()]
+         [PXUIField(DisplayName = "Due Date")]
+         public virtual DateTime? DueDate { get; set; }
+         public abstract class dueDate : PX.Data.BQL.BqlDateTime.Field<dueDate> { }
+         #endregion
+
+         #region CustomerID
+         [PXDBInt()]
+         [PXUIField(DisplayName = "Customer ID")]
+         public virtual int? CustomerID { get; set; }
+         public abstract class customerID : PX.Data.BQL.BqlInt.Field<customerID> { }
+         #endregion
+
+         #region Termid
+         [PXDBString(20, IsUnicode = true, InputMask = "")]
+         [PXUIField(DisplayName = "Termid")]
+         public virtual string Termid { get; set; }
+         public abstract class termid : PX.Data.BQL.BqlString.Field<termid> { }
+         #endregion
+
+         #region Curyid
+         [PXDBString(10, IsUnicode = true, InputMask = "")]
+         [PXUIField(DisplayName = "Curyid")]
+         public virtual string Curyid { get; set; }
+         public abstract class curyid : PX.Data.BQL.BqlString.Field<curyid> { }
+         #endregion
+
+         #region DocDes
+         [PXDBString(200, IsUnicode = true, InputMask = "")]
+         [PXUIField(DisplayName = "Doc Des")]
+         public virtual string DocDes { get; set; }
+         public abstract class docDes : PX.Data.BQL.BqlString.Field<docDes> { }
+         #endregion
+
+         #region CuryApplAmt
+         [PXDBDecimal()]
+         [PXUIField(DisplayName = "Cury Appl Amt")]
+         public virtual Decimal? CuryApplAmt { get; set; }
+         public abstract class curyApplAmt : PX.Data.BQL.BqlDecimal.Field<curyApplAmt> { }
+         #endregion
+
+         #region CuryUnappliedBal
+         [PXDBDecimal()]
+         [PXUIField(DisplayName = "Cury Unapplied Bal")]
+         public virtual Decimal? CuryUnappliedBal { get; set; }
+         public abstract class curyUnappliedBal : PX.Data.BQL.BqlDecimal.Field<curyUnappliedBal> { }
+         #endregion
+
+         #region CreatedByID
+         [PXDBCreatedByID()]
+         public virtual Guid? CreatedByID { get; set; }
+         public abstract class createdByID : PX.Data.BQL.BqlGuid.Field<createdByID> { }
+         #endregion
+
+         #region CreatedByScreenID
+         [PXDBCreatedByScreenID()]
+         public virtual string CreatedByScreenID { get; set; }
+         public abstract class createdByScreenID : PX.Data.BQL.BqlString.Field<createdByScreenID> { }
+         #endregion
+
+         #region CreatedDateTime
+         [PXDBCreatedDateTime()]
+         public virtual DateTime? CreatedDateTime { get; set; }
+         public abstract class createdDateTime : PX.Data.BQL.BqlDateTime.Field<createdDateTime> { }
+         #endregion
+
+         #region LastModifiedByID
+         [PXDBLastModifiedByID()]
+         public virtual Guid? LastModifiedByID { get; set; }
+         public abstract class lastModifiedByID : PX.Data.BQL.BqlGuid.Field<lastModifiedByID> { }
+         #endregion
+
+         #region LastModifiedByScreenID
+         [PXDBLastModifiedByScreenID()]
+         public virtual string LastModifiedByScreenID { get; set; }
+         public abstract class lastModifiedByScreenID : PX.Data.BQL.BqlString.Field<lastModifiedByScreenID> { }
+         #endregion
+
+         #region LastModifiedDateTime
+         [PXDBLastModifiedDateTime()]
+         public virtual DateTime? LastModifiedDateTime { get; set; }
+         public abstract class lastModifiedDateTime : PX.Data.BQL.BqlDateTime.Field<lastModifiedDateTime> { }
+         #endregion
+
+         #region Tstamp
+         [PXDBTimestamp()]
+         [PXUIField(DisplayName = "Tstamp")]
+         public virtual byte[] Tstamp { get; set; }
+         public abstract class tstamp : PX.Data.BQL.BqlByteArray.Field<tstamp> { }
+         #endregion
+      }
+   }
+   ```
+
+3. Publish > Publish Current Project
+
+> ### **New Form**
+
+1. Customization Project > Customization Project Editor > Screens > Create New Screen
+   ![New](./images/forms/New_Form_3.png)
+
+2. generate new screen
+
+   - Screen ID
+   - Graph Name (Business Logic Area)
+   - Graph Namespace (Default)
+   - Page Title
+   - Template -> Form (FormView)
+     ![New](./images/forms/New_Form_4.png)
+
+     ```C#
+     using System;
+     using PX.Data;
+
+     namespace ErppTestP
+     {
+        public class ExMaint : PXGraph<ExMaint>
+        {
+
+           public PXSave<MasterTable> Save;
+           public PXCancel<MasterTable> Cancel;
+
+
+           public PXFilter<MasterTable> MasterView;
+           public PXFilter<DetailsTable> DetailsView;
+
+           [Serializable]
+           public class MasterTable : IBqlTable
+           {
+
+           }
+
+           [Serializable]
+           public class DetailsTable : IBqlTable
+           {
+
+           }
+        }
+     }
+     ```
+
+3. Publish > Publish Current Project
+   ![file](./images/forms/New_Form_5.png)
+
+4. ExMaint (Business Logic Area) -> Create View
+
+   - Document -> View Name
+
+   ```C#
+   public SelectFrom<ErppARBilling>.View Document;
+
+   public PXSave<ErppARBilling> Save;
+   public PXCancel<ErppARBilling> Cancel;
+   ```
+
+5. Publish > Publish Current Project
+
+6. set view for components
+
+   - DataSource -> PrimaryView -> View Name (Document) -> Save
+     ![image](./images/forms/New_Form_6.png)
+   - Form -> DataMember -> View Name (Document) -> Save
+     ![image](./images/forms/New_Form_7.png)
+
+7. result
+   ![image](./images/forms/New_Form_8.png)
+
+8. create controls
+   ![image](./images/forms/New_Form_9.png)
+   ![image](./images/forms/New_Form_10.png)
+
+9. Publish > Publish Current Project
+   ![image](./images/forms/New_Form_11.png)
+
+10. layout
+    ![image](./images/forms/New_Form_12.png)
+    ![image](./images/forms/New_Form_13.png)
+
+11. create view details
+
+    ```C#
+    // Setup details view
+    public PXSelect<ErppARBilling,
+      Where<ErppARBilling.refNbr,
+          Equal<Current<ErppARBillingDetails.billingID>>>> CurrentDocument;
+    public PXSelect<ErppARBillingDetails,
+      Where<ErppARBillingDetails.billingID,
+          Equal<Current<ErppARBilling.refNbr>>>> Transaction;
+    ```
+
+12. Publish > Publish Current Project
+
+13. add controls
+    ![image](./images/forms/New_Form_14.png)
+
+14. setup controls
+    ![image](./images/forms/New_Form_15.png)
+    ![image](./images/forms/New_Form_16.png)
+
+    - AutoAdjustColumns -> True
+    - DataMember -> Transaction
+    - Height -> 200px
+    - Skin ID -> DetailsInTab
+    - Width -> 100%
+    - SyncPosition -> True
+      ![image](./images/forms/New_Form_17.png)
+
+15. result
+    ![image](./images/forms/New_Form_18.png)
