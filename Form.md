@@ -675,7 +675,7 @@
 
 9. Publish > Publish Curreent Project
 
-10. save number
+10. save numbering name
     ![image](./images/forms/Auto_Num_6.png)
     ![image](./images/forms/Auto_Num_7.png)
 
