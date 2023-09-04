@@ -1,4 +1,10 @@
-# REPORT
+# Getting started
+- [Go to Report](#report)
+   - [Report From std Form](#report-from-std-form)
+   - [Create Report](#create-report)
+   - [Report New Form (Criteria Form)](#report-new-form-criteria-form)
+
+# Report
 
 > ### **Report From std Form**
 
@@ -59,7 +65,7 @@
 6. Result
    ![image](./images/reports/Button_Report.png)
 
-> **สร้างรายงาน**
+> ### **Create Report**
 
 1. Open Report Desginer
    ![image](./images/reports/Report_Designer.png)

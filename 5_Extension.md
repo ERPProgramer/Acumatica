@@ -1,3 +1,7 @@
+# Getting started
+- [Go to Extension Library](#extension-library)
+- [Go to Report Functions](#report-functions)
+
 # Extension Library
 
 1. Customization Projects > Customization Project Editor > Extension Library > Create New

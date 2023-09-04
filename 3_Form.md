@@ -1,3 +1,17 @@
+# Getting started
+- [Go to Add Column From STD Form](#add-column-from-std-form)
+   - [Add Column](#add-column)
+- [Go to Action Componant](#action-componant)
+   - [Action Data Change](#action-data-change)
+   - [Calculete in this Form - Other Form](#calculete-in-this-form---other-form)
+   - [Create Link Form](#create-link-form)
+   - [Combo Box](#combo-box)
+- [Go to New Form New Table + Sub Grid (2 table)](#new-form-new-table--sub-grid-2-table)
+   - [New Table](#new-table)
+   - [New DAC](#new-dac)
+   - [New Form](#new-form)
+   - [Auto Numbering](#auto-numbering)
+
 # Add Column From STD Form
 
 > ### **Add Column**

@@ -1,3 +1,8 @@
+# Getting started
+[Go to How to back up and Install Program To Production Server](#how-to-back-up-and-install-program-to-production-server)
+  - [Back up](#back-up)
+  - [Install Program](#install-program)
+
 # How to back up and Install Program To Production Server
 
 > ### **Back up**

@@ -1,3 +1,8 @@
+# Getting started
+- [Go to Install Dev. Tool](#install-dev-tool)
+   - [Acumatica Configuration](#acumatica-configuration)
+   - [Visual Studio](#visual-studio)
+
 # Install Dev. Tool
 
 > ### **Acumatica Configuration**
