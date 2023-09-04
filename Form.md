@@ -504,15 +504,30 @@
 
 11. create view details
 
-    ```C#
-    // Setup details view
-    public PXSelect<ErppARBilling,
-      Where<ErppARBilling.refNbr,
-          Equal<Current<ErppARBillingDetails.billingID>>>> CurrentDocument;
-    public PXSelect<ErppARBillingDetails,
-      Where<ErppARBillingDetails.billingID,
-          Equal<Current<ErppARBilling.refNbr>>>> Transaction;
-    ```
+    - DAC
+
+      ```C#
+      #region BillingID
+      [PXDBString(10, IsKey = true, IsUnicode = true, InputMask = "")]
+      [PXUIField(DisplayName = "Billing ID")]
+      [PXDBDefault(typeof(ErppARBilling.refNbr))]
+      [PXParent(typeof(Select<ErppARBilling,
+         Where<ErppARBilling.refNbr, Equal<Current<billingID>>>>))]
+      public virtual string BillingID { get; set; }
+      public abstract class billingID : PX.Data.BQL.BqlString.Field<billingID> { }
+      #endregion
+      ```
+
+    - View
+      ```C#
+      // Setup details view
+      public PXSelect<ErppARBilling,
+         Where<ErppARBilling.refNbr,
+            Equal<Current<ErppARBillingDetails.billingID>>>> CurrentDocument;
+      public PXSelect<ErppARBillingDetails,
+         Where<ErppARBillingDetails.billingID,
+            Equal<Current<ErppARBilling.refNbr>>>> Transaction;
+      ```
 
 12. Publish > Publish Current Project
 
@@ -533,3 +548,170 @@
 
 15. result
     ![image](./images/forms/New_Form_18.png)
+
+> ### **Auto Numbering**
+
+1. Numbering Sequences > Add New Record
+   ![image](./images/forms/Auto_Num_1.png)
+
+2. create Table for Auto Numbering
+
+   ```SQL
+   IF (NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = 'dbo' AND TABLE_NAME = 'ErppARBillingSetup'))
+   BEGIN
+   	CREATE TABLE [dbo].[ErppARBillingSetup](
+   		AutoNumID int IDENTITY(1,1) primary key,
+   		AutoNum nvarchar(10) NOT NULL,
+
+   		CreatedByID uniqueidentifier NOT NULL,
+   		CreatedByScreenID char(8) NOT NULL,
+   		CreatedDateTime datetime NOT NULL,
+   		LastModifiedByID uniqueidentifier NOT NULL,
+   		LastModifiedByScreenID char(8) NOT NULL,
+   		LastModifiedDateTime datetime NOT NULL,
+   		tstamp timestamp NOT NULL
+   	)
+   END
+   ```
+
+3. create dac
+   ![image](./images/forms/Auto_Num_2.png)
+
+   ```C#
+   [Serializable]
+   [PXCacheName("ErppARBillingSetup")]
+   public class ErppARBillingSetup : IBqlTable
+   {
+      #region AutoNumID
+      [PXDBIdentity(IsKey = true)]
+      public virtual int? AutoNumID { get; set; }
+      public abstract class autoNumID : PX.Data.BQL.BqlInt.Field<autoNumID> { }
+      #endregion
+
+      #region AutoNum
+      [PXDBString(10, IsUnicode = true, InputMask = "")]
+      [PXUIField(DisplayName = "Auto Num")]
+      public virtual string AutoNum { get; set; }
+      public abstract class autoNum : PX.Data.BQL.BqlString.Field<autoNum> { }
+      #endregion
+
+      #region CreatedByID
+      [PXDBCreatedByID()]
+      public virtual Guid? CreatedByID { get; set; }
+      public abstract class createdByID : PX.Data.BQL.BqlGuid.Field<createdByID> { }
+      #endregion
+
+      #region CreatedByScreenID
+      [PXDBCreatedByScreenID()]
+      public virtual string CreatedByScreenID { get; set; }
+      public abstract class createdByScreenID : PX.Data.BQL.BqlString.Field<createdByScreenID> { }
+      #endregion
+
+      #region CreatedDateTime
+      [PXDBCreatedDateTime()]
+      public virtual DateTime? CreatedDateTime { get; set; }
+      public abstract class createdDateTime : PX.Data.BQL.BqlDateTime.Field<createdDateTime> { }
+      #endregion
+
+      #region LastModifiedByID
+      [PXDBLastModifiedByID()]
+      public virtual Guid? LastModifiedByID { get; set; }
+      public abstract class lastModifiedByID : PX.Data.BQL.BqlGuid.Field<lastModifiedByID> { }
+      #endregion
+
+      #region LastModifiedByScreenID
+      [PXDBLastModifiedByScreenID()]
+      public virtual string LastModifiedByScreenID { get; set; }
+      public abstract class lastModifiedByScreenID : PX.Data.BQL.BqlString.Field<lastModifiedByScreenID> { }
+      #endregion
+
+      #region LastModifiedDateTime
+      [PXDBLastModifiedDateTime()]
+      public virtual DateTime? LastModifiedDateTime { get; set; }
+      public abstract class lastModifiedDateTime : PX.Data.BQL.BqlDateTime.Field<lastModifiedDateTime> { }
+      #endregion
+
+      #region Tstamp
+      [PXDBTimestamp()]
+      [PXUIField(DisplayName = "Tstamp")]
+      public virtual byte[] Tstamp { get; set; }
+      public abstract class tstamp : PX.Data.BQL.BqlByteArray.Field<tstamp> { }
+      #endregion
+   }
+   ```
+
+4. Publish > Publish Curreent Project
+
+5. create form setup
+   ![form](./images/forms/Auto_Num_3.png)
+
+6. Publish > Publish Curreent Project
+
+7. create view
+
+   ```C#
+   public PXSelect<ErppARBillingSetup> Document;
+
+   public PXSave<ErppARBillingSetup> Save;
+   public PXCancel<ErppARBillingSetup> Cancel;
+   ```
+
+   ![image](./images/forms/Auto_Num_4.png)
+
+8. set selector attribute
+
+   ```C#
+   #region AutoNum
+   [PXDBString(10, IsUnicode = true, InputMask = "")]
+   [PXUIField(DisplayName = "Auto Num")]
+   [PXSelector(typeof(Search<Numbering.numberingID>),
+      DescriptionField = typeof(Numbering.descr))]
+   public virtual string AutoNum { get; set; }
+   public abstract class autoNum : PX.Data.BQL.BqlString.Field<autoNum> { }
+   #endregion
+   ```
+
+   ![image](./images/forms/Auto_Num_5.png)
+
+9. Publish > Publish Curreent Project
+
+10. save number
+    ![image](./images/forms/Auto_Num_6.png)
+    ![image](./images/forms/Auto_Num_7.png)
+
+11. setup main form
+
+- DAC
+  ```C#
+  #region RefNbr
+  [PXDBString(10, IsKey = true, IsUnicode = true, InputMask = "")]
+  [PXUIField(DisplayName = "Ref Nbr")]
+  [PXDefault(PersistingCheck = PXPersistingCheck.NullOrBlank)]
+  [AutoNumber(typeof(ErppARBillingSetup.autoNum), typeof(AccessInfo.businessDate))]
+  public virtual string RefNbr { get; set; }
+  public abstract class refNbr : PX.Data.BQL.BqlString.Field<refNbr> { }
+  #endregion
+  ```
+- View
+  ```C#
+  public PXSetup<ErppARBillingSetup> DocumentSetUp;
+  public SelectFrom<ErppARBilling>.View Document;
+  ```
+- Event RowPersisting (จังหวะกำลังเซฟ)
+  ```C#
+  #region Document Events RowPersisting
+  protected virtual void _(Events.RowPersisting<ErppARBilling> e)
+  {
+     ErppARBilling row = e.Row;
+     if (row != null)
+     {
+        AutoNumberAttribute.SetNumberingId<ErppARBilling.refNbr>(e.Cache, "ERPPARBILL");
+     }
+  }
+  #endregion
+  ```
+
+12. Publish > Publish Curreent Project
+
+13. result
+    ![result](./images/forms/Auto_Num_8.png)
