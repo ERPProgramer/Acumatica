@@ -202,5 +202,6 @@
   ![image](./images/extensions/extensions_8.png)
 
 8. change ReportLauncher
-  ![image](./images/extensions/extensions_9.png)
-  ![image](./images/extensions/extensions_10.png)
+    - Site Map > Url -> ~/Frames/ERPP/ReportLauncher.aspx?ID=BI200101.rpx
+    ![image](./images/extensions/extensions_9.png)
+    ![image](./images/extensions/extensions_10.png)
