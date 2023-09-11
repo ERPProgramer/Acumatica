@@ -162,3 +162,11 @@
 
 7. result
    ![image](./images/reports/Ex_new_11.png)
+
+> ### **Additional Filtering Conditions**
+
+1. Report Designer > File > Build Schema > Viewer Fields > Load used fields
+   ![image](./images/reports/Additional_Filter_2.png)
+
+2. result
+   ![image](./images/reports/Additional_Filter_1.png)
